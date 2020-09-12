@@ -23,5 +23,6 @@ Make sure you set up a virtualenv for the project, to help manage requirements.t
 ### Running a local server
 
 1. Make sure you run the database and other containers: `docker-compose up -d`
-2. Run the server: `python manage.py runserver`
-3. Start coding!
+2. rune `set -a && source mythcaster.env` to set the environment variables from the file made during setup
+3. Run the server: `python manage.py runserver`
+4. Start coding!
