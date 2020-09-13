@@ -1,5 +1,0 @@
-{
-    "python.linting.pylintEnabled": true,
-    "python.linting.enabled": true,
-    "python.pythonPath": "/home/tristan/.virtualenvs/myth-caster/bin/python"
-}
