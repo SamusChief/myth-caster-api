@@ -66,40 +66,62 @@ class Character(OwnedModel):
 
     @property
     def strength_modifier(self):
-        """ Strength Modifier property """
+        """ Strength Modifier property. Returns an integer. """
         return Character._get_modifier(self.strength)
 
     @property
     def dexterity_modifier(self):
-        """ Dexterity Modifier property """
+        """ Dexterity Modifier property. Returns an integer. """
         return Character._get_modifier(self.dexterity)
 
     @property
     def constitution_modifier(self):
-        """ Constitution Modifier property """
+        """ Constitution Modifier property. Returns an integer. """
         return Character._get_modifier(self.constitution)
 
     @property
     def intelligence_modifier(self):
-        """ Intelligence Modifier property """
+        """ Intelligence Modifier property. Returns an integer. """
         return Character._get_modifier(self.intelligence)
 
     @property
     def wisdom_modifier(self):
-        """ Wisdom Modifier property """
+        """ Wisdom Modifier property. Returns an integer. """
         return Character._get_modifier(self.wisdom)
 
     @property
     def charisma_modifier(self):
-        """ Charisma Modifier property """
+        """ Charisma Modifier property. Returns an integer. """
         return Character._get_modifier(self.charisma)
 
     @property
-    def all_proficiencies(self):
+    def all_proficiencies_list(self):
         """ Get a characters full list of proficiencies. """
         result = []
-        # TODO
+        armor, weapons, tools, languages, skills, other = self._get_proficiencies()
+
+        result.extend(armor)
+        result.extend(weapons)
+        result.extend(tools)
+        result.extend(languages)
+        result.extend(skills)
+        result.extend(other)
+
         return result
+
+    @property
+    def all_proficiencies_dict(self):
+        """ Get a characters full list of proficiencies, formatted as a dict object. """
+        armor, weapons, tools, languages, skills, other = self._get_proficiencies()
+
+        return {
+            'armor': armor,
+            'weapons': weapons,
+            'tools': tools,
+            'languages': languages,
+            'skills': skills,
+            'other': other,
+        }
 
     @property
     def all_inventory(self):
@@ -116,3 +138,44 @@ class Character(OwnedModel):
     def _get_modifier(score: int):
         """ Private method for calculating modifier based on score. """
         return math.floor((score - 10) / 2)
+
+    def _get_proficiencies(self):
+        """
+        Grab and return the various proficiencies a character has.
+
+        :return: a tuple of proficiency arrays, in this order:
+            armor, weapons, tools, languages, skills, other
+        """
+        # Armor proficiencies
+        armor_proficiencies = []
+        if self.proficient_light_armor:
+            armor_proficiencies.append('Light Armor')
+        if self.proficient_medium_armor:
+            armor_proficiencies.append('Medium Armor')
+        if self.proficient_heavy_armor:
+            armor_proficiencies.append('Heavy Armor')
+        if self.proficient_light_armor:
+            armor_proficiencies.append('Shields')
+        armor_proficiencies = sorted(armor_proficiencies)
+
+        # Weapon proficiencies
+        weapon_proficiencies = []
+        if self.proficient_simple:
+            armor_proficiencies.append('Simple')
+        if self.proficient_martial:
+            armor_proficiencies.append('Martial')
+        weapon_proficiencies = sorted(weapon_proficiencies)
+
+        # Other proficiencies
+        tool_proficiencies = sorted(self.proficient_tools.split(','))
+        language_proficiencies = sorted(self.proficient_languages.split(','))
+        other_proficiencies = sorted(self.proficient_other.split(','))
+
+        # Skill proficiencies
+        skill_proficiencies = []
+        for skill in self.proficient_skills:
+            skill_proficiencies.append(skill.name)
+        skill_proficiencies = sorted(skill_proficiencies)
+
+        return armor_proficiencies, weapon_proficiencies, tool_proficiencies, \
+               language_proficiencies, skill_proficiencies, other_proficiencies
