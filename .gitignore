@@ -133,4 +133,5 @@ dmypy.json
 
 # VS Code stuff
 .vscode
+.vscode/*.json
 .vscode/**
