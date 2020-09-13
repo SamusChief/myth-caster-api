@@ -16,10 +16,10 @@ class BaseEquipment(OwnedModel):
         weight: the weight of the item, in pounds.
         cost: the cost of the item, in gold. 1 silver is 0.1, 1 copper is 0.01.
     """
-    name = models.CharField(unique=True)
+    name = models.CharField(unique=True, max_length=255, db_index=True)
     description = models.TextField(blank=True, null=True)
-    weight = models.FloatField(default=0)
-    cost = models.IntegerField(default=0, validators=[validators.MinValueValidator(0)])
+    weight = models.FloatField(default=0, db_index=True)
+    cost = models.IntegerField(default=0, validators=[validators.MinValueValidator(0)], db_index=True)
 
     class Meta:
         abstract = True

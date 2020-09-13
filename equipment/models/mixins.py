@@ -30,7 +30,7 @@ class MagicItemMixin:
         requires_attunement: whether this magic item needs to be attuned to.
             Default is False.
     """
-    rarity = models.CharField(choices=RARITY_CHOICES, default=MUNDANE)
+    rarity = models.CharField(choices=RARITY_CHOICES, default=MUNDANE, max_length=2, db_index=True)
     requires_attunement = models.BooleanField(default=False)
 
     @property

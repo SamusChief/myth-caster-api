@@ -31,7 +31,7 @@ class Armor(BaseEquipment, MagicItemMixin):
         stealth_disadvantage: whether the armor imposes disadvantage on Stealth checks.
             Default is False
     """
-    category = models.CharField(choices=ARMOR_CATEGORY_CHOICES)
-    armor_class = models.IntegerField()
+    category = models.CharField(choices=ARMOR_CATEGORY_CHOICES, max_length=1, db_index=True)
+    armor_class = models.IntegerField(db_index=True)
     strength_requirement = models.IntegerField(default=1)
     stealth_disadvantage = models.BooleanField(default=False)

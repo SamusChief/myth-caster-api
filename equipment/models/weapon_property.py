@@ -10,5 +10,5 @@ class WeaponProperty(models.Model):
         description: a description of what the property does or means mechanically.
             Defaults to null.
     """
-    name = models.CharField(unique=True)
+    name = models.CharField(unique=True, max_length=255, db_index=True)
     description = models.TextField(blank=True, null=True)

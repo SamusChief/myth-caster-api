@@ -1,3 +1,4 @@
+""" Settings for the Django Rest Framework """
 REST_FRAMEWORK = {
     'DEFAULT_PAGINATION_CLASS': 'common.paginators.MythCasterPagination',
     'PAGE_SIZE': 100,

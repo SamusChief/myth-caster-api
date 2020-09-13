@@ -24,7 +24,7 @@ class Weapon(BaseEquipment, MagicItemMixin):
             One of: Simple ('S'), Martial ('M'), or Other ('O')
         properties: Relation field to WeaponProperty model. defaults to null.
     """
-    damage_dice = models.CharField()
-    damage_type = models.CharField()
-    category = models.CharField(choices=WEAPON_CATEGORY_CHOICES)
-    properties = models.ManyToManyField(to=WeaponProperty, blank=True, null=True)
+    damage_dice = models.CharField(max_length=255, db_index=True)
+    damage_type = models.CharField(max_length=255, db_index=True)
+    category = models.CharField(choices=WEAPON_CATEGORY_CHOICES, max_length=1, db_index=True)
+    properties = models.ManyToManyField(to=WeaponProperty, related_name='weapons')

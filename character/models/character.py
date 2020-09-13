@@ -1,5 +1,5 @@
 """
-Character model definition. Includes several properties within the model which are derived from fields:
+Character model definition. Includes properties within the model which are derived from fields:
     - Modifier calculators for each of the 6 abilities
     - Complete inventory list
     - Complete proficiencies list
@@ -22,7 +22,7 @@ class Character(OwnedModel):
     """
 
     # Basic information fields
-    name = models.CharField()
+    name = models.CharField(max_length=255)
     ancestry = models.ForeignKey(to=Ancestry, on_delete=models.PROTECT)
     xp = models.PositiveIntegerField(default=0)
     level = models.IntegerField(default=1, validators=[validators.MinLengthValidator(1)])
@@ -52,17 +52,17 @@ class Character(OwnedModel):
     proficient_languages = models.TextField(default='')
 
     # Skill Proficiencies
-    proficient_skills = models.ManyToManyField(to=Skill, blank=True, null=True)
+    proficient_skills = models.ManyToManyField(to=Skill)
 
     # catch all for other proficiencies, stored as comma delimited text
     proficient_other = models.TextField(default='')
 
     # Character Inventory Fields
-    inventory_adventuring_gear = models.ManyToManyField(to=AdventuringGear, blank=True, null=True)
-    inventory_armors = models.ManyToManyField(to=Armor, blank=True, null=True)
-    inventory_tools = models.ManyToManyField(to=Tool, blank=True, null=True)
-    inventory_weapons = models.ManyToManyField(to=Weapon, blank=True, null=True)
-    inventory_wondrous_items = models.ManyToManyField(to=WondrousItem, blank=True, null=True)
+    inventory_adventuring_gear = models.ManyToManyField(to=AdventuringGear)
+    inventory_armors = models.ManyToManyField(to=Armor)
+    inventory_tools = models.ManyToManyField(to=Tool)
+    inventory_weapons = models.ManyToManyField(to=Weapon)
+    inventory_wondrous_items = models.ManyToManyField(to=WondrousItem)
 
     @property
     def strength_modifier(self):
