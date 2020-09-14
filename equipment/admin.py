@@ -4,9 +4,9 @@ from django.contrib import admin
 from .models import AdventuringGear, Armor, Tool, Weapon, WeaponProperty, WondrousItem
 
 # Register your models here.
-admin.register(AdventuringGear)
-admin.register(Armor)
-admin.register(Tool)
-admin.register(Weapon)
-admin.register(WeaponProperty)
-admin.register(WondrousItem)
+admin.site.register(AdventuringGear)
+admin.site.register(Armor)
+admin.site.register(Tool)
+admin.site.register(Weapon)
+admin.site.register(WeaponProperty)
+admin.site.register(WondrousItem)
