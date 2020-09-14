@@ -6,3 +6,16 @@ services:
             - ./mythcaster.env
         volumes:
             - ~/postgres/myth-caster-api:/var/lib/postgresql/data
+    django:
+        image: python:3
+        env_file:
+            - ./mythcaster.env
+        command: bash -c "cd /app && pip install --upgrade pip && pip install -r requirements.txt && python manage.py makemigrations && python manage.py migrate && python manage.py runserver 0.0.0.0:8000"
+        volumes:
+            - "./:/app"
+        ports:
+            - "8000:8000"
+        depends_on:
+            - postgres
+        links:
+            - postgres
