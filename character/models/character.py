@@ -6,7 +6,6 @@ Character model definition. Includes properties within the model which are deriv
 """
 import math
 
-from django.core import validators
 from django.db import models
 
 from common.models import OwnedModel
@@ -14,18 +13,109 @@ from equipment.models import AdventuringGear, Armor, Tool, Weapon, WondrousItem
 from skills.models import Skill
 
 from .ancestry import Ancestry
+from .background import Background
+from .character_class import CharacterClass
+
+PROFICIENT = 'P'
+EXPERT = 'E'
+PROFICIENCY_LEVELS = [
+    (PROFICIENT, 'Proficient'),
+    (EXPERT, 'Expert'),
+]
+
+
+class ClassAndLevel(OwnedModel):
+    """ Mapping table for tracking a character's class and level in that class. """
+    character_class = models.ForeignKey(to=CharacterClass, on_delete=models.PROTECT)
+    level = models.PositiveIntegerField()
+
+
+class InventoryAdventuringGear(OwnedModel):
+    """ Mapping table for tracking a characters gear and quantities """
+    gear = models.ForeignKey(to=AdventuringGear, on_delete=models.PROTECT)
+    quantity = models.PositiveIntegerField()
+
+
+class InventoryArmor(OwnedModel):
+    """ Mapping table for tracking a characters armors and quantities """
+    gear = models.ForeignKey(to=Armor, on_delete=models.PROTECT)
+    quantity = models.PositiveIntegerField()
+
+
+class InventoryTool(OwnedModel):
+    """ Mapping table for tracking a characters tools and quantities """
+    gear = models.ForeignKey(to=Tool, on_delete=models.PROTECT)
+    quantity = models.PositiveIntegerField()
+
+
+class InventoryWeapon(OwnedModel):
+    """ Mapping table for tracking a characters weapons and quantities """
+    gear = models.ForeignKey(to=Weapon, on_delete=models.PROTECT)
+    quantity = models.PositiveIntegerField()
+
+
+class InventoryWondrousItem(OwnedModel):
+    """ Mapping table for tracking a characters wondroud items and quantities """
+    gear = models.ForeignKey(to=WondrousItem, on_delete=models.PROTECT)
+    quantity = models.PositiveIntegerField()
+
+
+class SkillProficiency(OwnedModel):
+    """ Mapping table for tracking skill and proficiency level """
+    skill = models.ForeignKey(to=Skill, on_delete=models.PROTECT)
+    proficiency_level = models.CharField(choices=PROFICIENCY_LEVELS,
+                                         default=PROFICIENT, max_length=1)
 
 
 class Character(OwnedModel):
     """
     Model for representing characters.
+
+    Attributes:
+        name: name of the character
+        ancestry: the character's ancestry
+        background: the character's background
+        xp: total experience points
+        class_levels: mapping of classes and levels the character has
+        hit_point_total: character total hit points
+        hit_point_current: character current hit points
+        temporary_hit_point_total: temporary HP, deducted first
+        strength: raw physical strength of the character
+        dexterity: agility and poise of the character
+        constitution: toughness and durability of the character
+        intelligence: raw intellect and knowledge of the character
+        wisdom: instincts and self-knowledge of the character
+        charisma: personality and charm of the character
+        proficient_light_armor: whether the character can use light armor
+        proficient_heavy_armor: whether the character can use heavy armor
+        proficient_shields: whether the character can use shields
+        proficient_simple: whether the character can use simple weapons
+        proficient_martial: whether the character can use martial weapons
+        proficient_tools: which tools the character can use
+        proficient_languages: which languages the character can speak/read/write
+        proficient_other: any other proficiencies the character has
+        skills: mapping of skills and proficiency levels the character has
+        jack_of_all_trades: whether the user gains half their proficiency bonus
+        initiative_bonus: any miscellaneous bonuses to initiative
+        inventory_adventuring_gear: mapping to quantity and gear items
+        inventory_armor: mapping to quantity and armors
+        inventory_tools: mapping to quantity and tools
+        inventory_weapons: mapping to quantity and weapons
+        inventory_wondroud_items: mapping to quantity and wondrous items
     """
 
     # Basic information fields
-    name = models.CharField(max_length=255)
+    name = models.CharField(max_length=255, db_index=True)
     ancestry = models.ForeignKey(to=Ancestry, on_delete=models.PROTECT)
+    background = models.ForeignKey(to=Background, on_delete=models.PROTECT)
     xp = models.PositiveIntegerField(default=0)
-    level = models.IntegerField(default=1, validators=[validators.MinLengthValidator(1)])
+    class_levels = models.ManyToManyField(to=ClassAndLevel,
+                                          related_name='characters_with_class_and_level')
+
+    # Health, conditions, and death tracking
+    hit_point_total = models.PositiveIntegerField()
+    hit_point_current = models.PositiveIntegerField()
+    temporary_hit_point_total = models.PositiveIntegerField()
 
     # Ability fields
     strength = models.PositiveIntegerField(default=10)
@@ -46,23 +136,50 @@ class Character(OwnedModel):
     proficient_martial = models.BooleanField(default=False)
 
     # Tool Proficiencies
-    proficient_tools = models.TextField(default='')
+    proficient_tools = models.TextField(blank=True, null=True)
 
     # Language Proficiencies
-    proficient_languages = models.TextField(default='')
+    proficient_languages = models.TextField(blank=True, null=True)
 
     # Skill Proficiencies
-    proficient_skills = models.ManyToManyField(to=Skill)
+    skills = models.ManyToManyField(to=SkillProficiency,
+                                    related_name='characters_with_skill_proficiency')
+    jack_of_all_trades = models.BooleanField(default=False)
+    initiative_bonus = models.PositiveIntegerField(default=0)
 
     # catch all for other proficiencies, stored as comma delimited text
-    proficient_other = models.TextField(default='')
+    proficient_other = models.TextField(blank=True, null=True)
 
     # Character Inventory Fields
-    inventory_adventuring_gear = models.ManyToManyField(to=AdventuringGear)
-    inventory_armors = models.ManyToManyField(to=Armor)
-    inventory_tools = models.ManyToManyField(to=Tool)
-    inventory_weapons = models.ManyToManyField(to=Weapon)
-    inventory_wondrous_items = models.ManyToManyField(to=WondrousItem)
+    inventory_adventuring_gear = models.ManyToManyField(to=InventoryAdventuringGear,
+                                                        related_name='characters_with_gear')
+    inventory_armors = models.ManyToManyField(to=InventoryArmor,
+                                              related_name='characters_with_armor')
+    inventory_tools = models.ManyToManyField(to=InventoryTool,
+                                             related_name='characters_with_tool')
+    inventory_weapons = models.ManyToManyField(to=InventoryWeapon,
+                                               related_name='characters_with_weapon')
+    inventory_wondrous_items = models.ManyToManyField(to=InventoryWondrousItem,
+                                                      related_name='characters_with_wondrous_item')
+
+    @property
+    def proficiency_bonus(self):
+        """ Get total character levels, and convert it to a proficiency bonus """
+        total_level = 0
+        for class_level in self.class_levels.all():
+            total_level += class_level.level
+
+        return math.ceil((total_level / 4) + 1)
+
+    @property
+    def initiative(self):
+        """ Get initiative, factoring bonuses and jack of all trades. """
+        result = 0
+        result += self.dexterity_modifier
+        if self.jack_of_all_trades:
+            result += math.floor(self.proficiency_bonus / 2)
+        result += self.initiative_bonus
+        return result
 
     @property
     def strength_modifier(self):
@@ -123,17 +240,6 @@ class Character(OwnedModel):
             'other': other,
         }
 
-    @property
-    def all_inventory(self):
-        """ Get a character's complete inventory """
-        result = []
-        result.extend(self.inventory_adventuring_gear.all())
-        result.extend(self.inventory_armors.all())
-        result.extend(self.inventory_tools.all())
-        result.extend(self.inventory_weapons.all())
-        result.extend(self.inventory_wondrous_items.all())
-        return result
-
     @staticmethod
     def _get_modifier(score: int):
         """ Private method for calculating modifier based on score. """
@@ -173,8 +279,8 @@ class Character(OwnedModel):
 
         # Skill proficiencies
         skill_proficiencies = []
-        for skill in self.proficient_skills:
-            skill_proficiencies.append(skill.name)
+        for skill in self.skills.all():
+            skill_proficiencies.append(skill.skill.name)
         skill_proficiencies = sorted(skill_proficiencies)
 
         return armor_proficiencies, weapon_proficiencies, tool_proficiencies, \

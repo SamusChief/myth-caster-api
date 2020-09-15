@@ -19,12 +19,24 @@ from django.urls import path
 from rest_framework import routers
 
 from administration.views import UserViewset
+from character.views import AncestryViewset, SubAncestryViewset, BackgroundViewset, \
+    CharacterClassViewset, ArchetypeViewset, CharacterViewset, FeatureViewset
 
 urlpatterns = [
     path('api/django-admin/', admin.site.urls),
 ]
 
 router = routers.DefaultRouter()
-router.register(r'api/administration/user', UserViewset, basename='user-readonly')
+# Admin Routes
+router.register(r'api/administration/user', UserViewset, basename='user-readonly-viewset')
+
+# Character Routes
+router.register(r'api/ancestry', AncestryViewset)
+router.register(r'api/ancestry/subancestry', SubAncestryViewset)
+router.register(r'api/background', BackgroundViewset)
+router.register(r'api/class', CharacterClassViewset)
+router.register(r'api/class/archetype', ArchetypeViewset)
+router.register(r'api/character', CharacterViewset)
+router.register(r'api/feature', FeatureViewset)
 
 urlpatterns += router.urls

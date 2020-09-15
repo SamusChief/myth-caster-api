@@ -12,3 +12,8 @@ class OwnedModel(models.Model):
 
     class Meta:
         abstract = True
+
+class NameStrMixin:
+    """ Mixin to give a model a __str__ implementation based on name field. """
+    def __str__(self):
+        return getattr(self, 'name', 'No Name Field')
