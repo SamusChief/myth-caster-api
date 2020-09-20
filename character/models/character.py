@@ -12,7 +12,7 @@ from common.models import OwnedModel
 from equipment.models import AdventuringGear, Armor, Tool, Weapon, WondrousItem
 from skills.models import Skill
 
-from .ancestry import Ancestry
+from .ancestry import Ancestry, SubAncestry
 from .background import Background
 from .character_class import CharacterClass
 
@@ -96,7 +96,7 @@ class Character(OwnedModel):
         proficient_other: any other proficiencies the character has
         skills: mapping of skills and proficiency levels the character has
         jack_of_all_trades: whether the user gains half their proficiency bonus
-        initiative_bonus: any miscellaneous bonuses to initiative
+        misc_initiative_bonus: any miscellaneous bonuses to initiative
         inventory_adventuring_gear: mapping to quantity and gear items
         inventory_armor: mapping to quantity and armors
         inventory_tools: mapping to quantity and tools
@@ -106,10 +106,13 @@ class Character(OwnedModel):
 
     # Basic information fields
     name = models.CharField(max_length=255, db_index=True)
-    ancestry = models.ForeignKey(to=Ancestry, on_delete=models.PROTECT)
+    ancestry = models.ForeignKey(to=Ancestry, on_delete=models.PROTECT, \
+        related_name='characters_with_ancestry')
+    subancestry = models.ForeignKey(to=SubAncestry, on_delete=models.PROTECT, \
+        related_name='characters_with_subancestry', blank=True, null=True)
     background = models.ForeignKey(to=Background, on_delete=models.PROTECT)
     xp = models.PositiveIntegerField(default=0)
-    class_levels = models.ManyToManyField(to=ClassAndLevel,
+    class_levels = models.ManyToManyField(to=ClassAndLevel, blank=True,
                                           related_name='characters_with_class_and_level')
 
     # Health, conditions, and death tracking
@@ -142,24 +145,24 @@ class Character(OwnedModel):
     proficient_languages = models.TextField(blank=True, null=True)
 
     # Skill Proficiencies
-    skills = models.ManyToManyField(to=SkillProficiency,
+    skills = models.ManyToManyField(to=SkillProficiency, blank=True,
                                     related_name='characters_with_skill_proficiency')
     jack_of_all_trades = models.BooleanField(default=False)
-    initiative_bonus = models.PositiveIntegerField(default=0)
+    misc_initiative_bonus = models.PositiveIntegerField(default=0)
 
     # catch all for other proficiencies, stored as comma delimited text
     proficient_other = models.TextField(blank=True, null=True)
 
     # Character Inventory Fields
-    inventory_adventuring_gear = models.ManyToManyField(to=InventoryAdventuringGear,
+    inventory_adventuring_gear = models.ManyToManyField(to=InventoryAdventuringGear, blank=True,
                                                         related_name='characters_with_gear')
-    inventory_armors = models.ManyToManyField(to=InventoryArmor,
+    inventory_armors = models.ManyToManyField(to=InventoryArmor, blank=True,
                                               related_name='characters_with_armor')
-    inventory_tools = models.ManyToManyField(to=InventoryTool,
+    inventory_tools = models.ManyToManyField(to=InventoryTool, blank=True,
                                              related_name='characters_with_tool')
-    inventory_weapons = models.ManyToManyField(to=InventoryWeapon,
+    inventory_weapons = models.ManyToManyField(to=InventoryWeapon, blank=True,
                                                related_name='characters_with_weapon')
-    inventory_wondrous_items = models.ManyToManyField(to=InventoryWondrousItem,
+    inventory_wondrous_items = models.ManyToManyField(to=InventoryWondrousItem, blank=True,
                                                       related_name='characters_with_wondrous_item')
 
     @property
@@ -178,7 +181,7 @@ class Character(OwnedModel):
         result += self.dexterity_modifier
         if self.jack_of_all_trades:
             result += math.floor(self.proficiency_bonus / 2)
-        result += self.initiative_bonus
+        result += self.misc_initiative_bonus
         return result
 
     @property
@@ -285,3 +288,11 @@ class Character(OwnedModel):
 
         return armor_proficiencies, weapon_proficiencies, tool_proficiencies, \
                language_proficiencies, skill_proficiencies, other_proficiencies
+
+    def __str__(self):
+        ancestry = f'{self.ancestry.name} ({self.subancestry.name})'
+        classes = []
+        for c_l in self.class_levels.all():
+            classes.append(f'{c_l.character_class.name} {c_l.level}')
+        classes_str = '/'.join(classes)
+        return f'{self.name}: {ancestry} {classes_str}'

@@ -1,4 +1,4 @@
-""" Character Viewsets """
+""" Character ViewSets """
 from rest_framework import viewsets
 
 from character.models import Character, ClassAndLevel, \
@@ -10,8 +10,8 @@ from character.serializers import CharacterSerializer, ClassAndLevelSerializer, 
             SkillProficiencySerializer
 
 
-class CharacterViewset(viewsets.ModelViewSet):
-    """ Viewset for Character. """
+class CharacterViewSet(viewsets.ModelViewSet):
+    """ ViewSet for Character. """
     queryset = Character.objects.all()
     serializer_class = CharacterSerializer
     search_fields = '__all__'
@@ -20,8 +20,8 @@ class CharacterViewset(viewsets.ModelViewSet):
     ordering = 'name'
 
 
-class ClassAndLevelViewset(viewsets.ModelViewSet):
-    """ Viewset for ClassAndLevel. """
+class ClassAndLevelViewSet(viewsets.ModelViewSet):
+    """ ViewSet for ClassAndLevel. """
     queryset = ClassAndLevel.objects.all()
     serializer_class = ClassAndLevelSerializer
     search_fields = '__all__'
@@ -30,8 +30,8 @@ class ClassAndLevelViewset(viewsets.ModelViewSet):
     ordering = 'character_class__name'
 
 
-class InventoryAdventuringGearViewset(viewsets.ModelViewSet):
-    """ Viewset for InventoryAdventuringGear. """
+class InventoryAdventuringGearViewSet(viewsets.ModelViewSet):
+    """ ViewSet for InventoryAdventuringGear. """
     queryset = InventoryAdventuringGear.objects.all()
     serializer_class = InventoryAdventuringGearSerializer
     search_fields = '__all__'
@@ -40,8 +40,8 @@ class InventoryAdventuringGearViewset(viewsets.ModelViewSet):
     ordering = 'gear__name'
 
 
-class InventoryArmorViewset(viewsets.ModelViewSet):
-    """ Viewset for InventoryArmor. """
+class InventoryArmorViewSet(viewsets.ModelViewSet):
+    """ ViewSet for InventoryArmor. """
     queryset = InventoryArmor.objects.all()
     serializer_class = InventoryArmorSerializer
     search_fields = '__all__'
@@ -50,8 +50,8 @@ class InventoryArmorViewset(viewsets.ModelViewSet):
     ordering = 'gear__name'
 
 
-class InventoryToolViewset(viewsets.ModelViewSet):
-    """ Viewset for InventoryTool. """
+class InventoryToolViewSet(viewsets.ModelViewSet):
+    """ ViewSet for InventoryTool. """
     queryset = InventoryTool.objects.all()
     serializer_class = InventoryToolSerializer
     search_fields = '__all__'
@@ -60,8 +60,8 @@ class InventoryToolViewset(viewsets.ModelViewSet):
     ordering = 'gear__name'
 
 
-class InventoryWeaponViewset(viewsets.ModelViewSet):
-    """ Viewset for InventoryWeapon. """
+class InventoryWeaponViewSet(viewsets.ModelViewSet):
+    """ ViewSet for InventoryWeapon. """
     queryset = InventoryWeapon.objects.all()
     serializer_class = InventoryWeaponSerializer
     search_fields = '__all__'
@@ -70,8 +70,8 @@ class InventoryWeaponViewset(viewsets.ModelViewSet):
     ordering = 'gear__name'
 
 
-class InventoryWondrousItemViewset(viewsets.ModelViewSet):
-    """ Viewset for InventoryWondrousItem. """
+class InventoryWondrousItemViewSet(viewsets.ModelViewSet):
+    """ ViewSet for InventoryWondrousItem. """
     queryset = InventoryWondrousItem.objects.all()
     serializer_class = InventoryWondrousItemSerializer
     search_fields = '__all__'
@@ -80,8 +80,8 @@ class InventoryWondrousItemViewset(viewsets.ModelViewSet):
     ordering = 'gear__name'
 
 
-class SkillProficiencyViewset(viewsets.ModelViewSet):
-    """ Viewset for SkillProficiency. """
+class SkillProficiencyViewSet(viewsets.ModelViewSet):
+    """ ViewSet for SkillProficiency. """
     queryset = SkillProficiency.objects.all()
     serializer_class = SkillProficiencySerializer
     search_fields = '__all__'

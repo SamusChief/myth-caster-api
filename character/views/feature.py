@@ -1,12 +1,12 @@
-""" Feature Viewsets """
+""" Feature ViewSets """
 from rest_framework import viewsets
 
 from character.models import Feature
 from character.serializers import FeatureSerializer
 
 
-class FeatureViewset(viewsets.ModelViewSet):
-    """ Viewset for Feature. """
+class FeatureViewSet(viewsets.ModelViewSet):
+    """ ViewSet for Feature. """
     queryset = Feature.objects.all()
     serializer_class = FeatureSerializer
     search_fields = '__all__'

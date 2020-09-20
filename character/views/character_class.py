@@ -1,4 +1,4 @@
-""" CharacterClass Viewsets """
+""" CharacterClass ViewSets """
 from rest_framework import viewsets
 
 from character.models import CharacterClass, Archetype, \
@@ -7,8 +7,8 @@ from character.serializers import CharacterClassSerializer, ArchetypeSerializer,
     FeaturesAtLevelSerializer, SpellsKnownAtLevelSerializer, SpellSlotsAtLevelSerializer
 
 
-class CharacterClassViewset(viewsets.ModelViewSet):
-    """ Viewset for CharacterClass. """
+class CharacterClassViewSet(viewsets.ModelViewSet):
+    """ ViewSet for CharacterClass. """
     queryset = CharacterClass.objects.all()
     serializer_class = CharacterClassSerializer
     search_fields = '__all__'
@@ -17,8 +17,8 @@ class CharacterClassViewset(viewsets.ModelViewSet):
     ordering = 'name'
 
 
-class ArchetypeViewset(viewsets.ModelViewSet):
-    """ Viewset for Archetype. """
+class ArchetypeViewSet(viewsets.ModelViewSet):
+    """ ViewSet for Archetype. """
     queryset = Archetype.objects.all()
     serializer_class = ArchetypeSerializer
     search_fields = '__all__'
@@ -27,8 +27,8 @@ class ArchetypeViewset(viewsets.ModelViewSet):
     ordering = 'name'
 
 
-class FeaturesAtLevelViewset(viewsets.ModelViewSet):
-    """ Viewset for FeaturesAtLevel. """
+class FeaturesAtLevelViewSet(viewsets.ModelViewSet):
+    """ ViewSet for FeaturesAtLevel. """
     queryset = FeaturesAtLevel.objects.all()
     serializer_class = FeaturesAtLevelSerializer
     search_fields = '__all__'
@@ -37,8 +37,8 @@ class FeaturesAtLevelViewset(viewsets.ModelViewSet):
     ordering = 'level'
 
 
-class SpellsKnownAtLevelViewset(viewsets.ModelViewSet):
-    """ Viewset for SpellsKnownAtLevel. """
+class SpellsKnownAtLevelViewSet(viewsets.ModelViewSet):
+    """ ViewSet for SpellsKnownAtLevel. """
     queryset = SpellsKnownAtLevel.objects.all()
     serializer_class = SpellsKnownAtLevelSerializer
     search_fields = '__all__'
@@ -47,8 +47,8 @@ class SpellsKnownAtLevelViewset(viewsets.ModelViewSet):
     ordering = 'level'
 
 
-class SpellSlotsAtLevelViewset(viewsets.ModelViewSet):
-    """ Viewset for SpellSlotsAtLevel. """
+class SpellSlotsAtLevelViewSet(viewsets.ModelViewSet):
+    """ ViewSet for SpellSlotsAtLevel. """
     queryset = SpellSlotsAtLevel.objects.all()
     serializer_class = SpellSlotsAtLevelSerializer
     search_fields = '__all__'

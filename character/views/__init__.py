@@ -1,10 +1,10 @@
 """ Character app views module. """
-from .ancestry import AncestryViewset, SubAncestryViewset
-from .background import BackgroundViewset
-from .character_class import CharacterClassViewset, ArchetypeViewset, \
-    FeaturesAtLevelViewset, SpellsKnownAtLevelViewset, SpellSlotsAtLevelViewset
-from .character import CharacterViewset, ClassAndLevelViewset, \
-    InventoryAdventuringGearViewset, InventoryArmorViewset, \
-        InventoryToolViewset, InventoryWeaponViewset, \
-            InventoryWondrousItemViewset, SkillProficiencyViewset
-from .feature import FeatureViewset
+from .ancestry import AncestryViewSet, SubAncestryViewSet
+from .background import BackgroundViewSet
+from .character_class import CharacterClassViewSet, ArchetypeViewSet, \
+    FeaturesAtLevelViewSet, SpellsKnownAtLevelViewSet, SpellSlotsAtLevelViewSet
+from .character import CharacterViewSet, ClassAndLevelViewSet, \
+    InventoryAdventuringGearViewSet, InventoryArmorViewSet, \
+        InventoryToolViewSet, InventoryWeaponViewSet, \
+            InventoryWondrousItemViewSet, SkillProficiencyViewSet
+from .feature import FeatureViewSet

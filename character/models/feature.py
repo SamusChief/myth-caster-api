@@ -1,9 +1,10 @@
 """ Background model. """
 from django.db import models
 
-from common.models import OwnedModel, NameStrMixin
+from common.models import OwnedModel
 
-class Feature(OwnedModel, NameStrMixin):
+
+class Feature(OwnedModel):
     """
     Model for representing features
 
@@ -27,3 +28,6 @@ class Feature(OwnedModel, NameStrMixin):
     prerequisite_intelligence = models.IntegerField(default=0, db_index=True)
     prerequisite_wisdom = models.IntegerField(default=0, db_index=True)
     prerequisite_charisma = models.IntegerField(default=0, db_index=True)
+
+    def __str__(self):
+        return str(self.name)

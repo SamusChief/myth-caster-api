@@ -1,7 +1,7 @@
 """ Models for representing Character Class and archetypes """
 from django.db import models
 
-from common.models import OwnedModel, NameStrMixin
+from common.models import OwnedModel
 from skills.models import Skill
 
 from .feature import Feature
@@ -90,7 +90,7 @@ class SpellsKnownAtLevel(SpellSlotsAtLevel):
     level_0 = models.PositiveIntegerField(default=0)
 
 
-class CharacterClass(OwnedModel, NameStrMixin):
+class CharacterClass(OwnedModel):
     """
     Model to represent classes and their attributes
 
@@ -133,11 +133,14 @@ class CharacterClass(OwnedModel, NameStrMixin):
 
     # Stuff by level
     features = models.ManyToManyField(to=FeaturesAtLevel,
-                                      related_name='character_class_with_features')
+                                      related_name='character_class_with_feature')
     spell_slots = models.ManyToManyField(to=SpellSlotsAtLevel,
                                          related_name='character_class_with_spell_slots')
     spells_known = models.ManyToManyField(to=SpellsKnownAtLevel,
                                           related_name='character_class_with_spells_known')
+
+    def __str__(self):
+        return str(self.name)
 
 
 class Archetype(CharacterClass):

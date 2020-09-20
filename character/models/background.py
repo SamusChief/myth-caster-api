@@ -1,13 +1,13 @@
 """ Background model. """
 from django.db import models
 
-from common.models import OwnedModel, NameStrMixin
+from common.models import OwnedModel
 from equipment.models import Armor, Tool, Weapon
 from skills.models import Skill
 
 from .feature import Feature
 
-class Background(OwnedModel, NameStrMixin):
+class Background(OwnedModel):
     """
     Model for representing character background
     TODO
@@ -28,11 +28,19 @@ class Background(OwnedModel, NameStrMixin):
     description = models.TextField()
     features = models.ManyToManyField(to=Feature)
 
-    granted_tools = models.ManyToManyField(to=Tool)
-    granted_armors = models.ManyToManyField(to=Armor)
-    granted_weapons = models.ManyToManyField(to=Weapon)
-    granted_skills = models.ManyToManyField(to=Skill)
+    suggested_personality_traits = models.TextField(blank=True, null=True)
+    suggested_ideals = models.TextField(blank=True, null=True)
+    suggested_bonds = models.TextField(blank=True, null=True)
+    suggested_flaws = models.TextField(blank=True, null=True)
+
+    granted_tools = models.ManyToManyField(to=Tool, blank=True)
+    granted_armors = models.ManyToManyField(to=Armor, blank=True)
+    granted_weapons = models.ManyToManyField(to=Weapon, blank=True)
+    granted_skills = models.ManyToManyField(to=Skill, blank=True)
     granted_languages = models.TextField(blank=True, null=True)
 
     starting_gold = models.FloatField(default=10)
     starting_equipment = models.TextField()
+
+    def __str__(self):
+        return str(self.name)

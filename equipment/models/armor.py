@@ -1,8 +1,7 @@
-""" Armor """
+""" Armor model. """
 from django.db import models
 
-from .base_equipment import BaseEquipment
-from .mixins import MagicItemMixin
+from .mixins import MagicItemModel
 
 
 LIGHT = 'L'
@@ -18,7 +17,7 @@ ARMOR_CATEGORY_CHOICES = [
 ]
 
 
-class Armor(BaseEquipment, MagicItemMixin):
+class Armor(MagicItemModel):
     """
     Define armor model, and fields specific to Armor.
 
@@ -35,3 +34,6 @@ class Armor(BaseEquipment, MagicItemMixin):
     armor_class = models.IntegerField(db_index=True)
     strength_requirement = models.IntegerField(default=1)
     stealth_disadvantage = models.BooleanField(default=False)
+
+    def __str__(self):
+        return 'Armor: ' + str(self.name)

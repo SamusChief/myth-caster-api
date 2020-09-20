@@ -1,6 +1,8 @@
 """ Useful mixins for equipment models. """
 from django.db import models
 
+from .base_equipment import BaseEquipment
+
 MUNDANE = 'M'
 COMMON = 'C'
 UNCOMMON = 'UC'
@@ -20,7 +22,7 @@ RARITY_CHOICES = [
 ]
 
 
-class MagicItemMixin:
+class MagicItemModel(BaseEquipment):
     """
     Mixin class for adding rarity field and other magic item properties to an equipment.
 
@@ -30,6 +32,7 @@ class MagicItemMixin:
         requires_attunement: whether this magic item needs to be attuned to.
             Default is False.
     """
+
     rarity = models.CharField(choices=RARITY_CHOICES, default=MUNDANE, max_length=2, db_index=True)
     requires_attunement = models.BooleanField(default=False)
 
@@ -42,3 +45,6 @@ class MagicItemMixin:
         and not all Armor and Weapons are magical.
         """
         return self.rarity is not MUNDANE
+
+    class Meta:
+        abstract = True

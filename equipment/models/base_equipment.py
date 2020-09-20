@@ -19,7 +19,8 @@ class BaseEquipment(OwnedModel):
     name = models.CharField(unique=True, max_length=255, db_index=True)
     description = models.TextField(blank=True, null=True)
     weight = models.FloatField(default=0, db_index=True)
-    cost = models.IntegerField(default=0, validators=[validators.MinValueValidator(0)], db_index=True)
+    cost = models.IntegerField(
+        default=0, validators=[validators.MinValueValidator(0)], db_index=True)
 
     class Meta:
         abstract = True

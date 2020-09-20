@@ -1,8 +1,7 @@
 """ Weapon model. """
 from django.db import models
 
-from .base_equipment import BaseEquipment
-from .mixins import MagicItemMixin
+from .mixins import MagicItemModel
 from .weapon_property import WeaponProperty
 
 
@@ -14,7 +13,7 @@ WEAPON_CATEGORY_CHOICES = [
 DEX_PROPERTY_KEYWORDS = ['finesse', 'thrown', 'ranged']
 
 
-class Weapon(BaseEquipment, MagicItemMixin):
+class Weapon(MagicItemModel):
     """
     Model to represent weapons and their unique fields.
 
@@ -46,3 +45,6 @@ class Weapon(BaseEquipment, MagicItemMixin):
             if 'ranged' in name:
                 return True
         return False
+
+    def __str__(self):
+        return 'Weapon: ' + str(self.name)
