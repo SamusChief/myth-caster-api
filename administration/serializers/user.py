@@ -8,4 +8,4 @@ class UserSerializer(serializers.ModelSerializer):
     """ User model serializer to protect sensitive data """
     class Meta:
         model = get_user_model()
-        fields = ['username', 'email']
+        fields = ['id', 'username', 'email', 'first_name']

@@ -1,11 +1,11 @@
 """ AdventuringGear serializers. """
-from rest_framework import serializers
-
+from common.serializers import OwnedModelSerializer
 from equipment.models import AdventuringGear
 
 
-class AdventuringGearSerializer(serializers.ModelSerializer):
+class AdventuringGearSerializer(OwnedModelSerializer):
     """ Serializer for AdventuringGear model """
     class Meta:
         model = AdventuringGear
         fields = '__all__'
+        depth = 1

@@ -6,7 +6,7 @@ from .serializers import SkillSerializer
 
 
 class SkillViewSet(viewsets.ModelViewSet):
-    """ ViewSet for ancestry. """
+    """ ViewSet for Skills. """
     queryset = Skill.objects.all()
     serializer_class = SkillSerializer
     search_fields = '__all__'

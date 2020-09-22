@@ -16,14 +16,16 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 
-from rest_framework import routers
+from rest_framework_nested import routers
 
 from administration.views import UserViewSet, GroupViewSet, PermissionViewSet
 from character.views import AncestryViewSet, BackgroundViewSet, CharacterClassViewSet, \
-    CharacterViewSet, FeatureViewSet
+    CharacterViewSet, FeatureViewSet, SubAncestryViewSet, ArchetypeViewSet
 from equipment.views import AdventuringGearViewSet, ArmorViewSet, ToolViewSet, \
-    WeaponViewSet, WondrousItemViewSet
+    WeaponViewSet, WondrousItemViewSet, WeaponPropertyViewSet
 from skills.views import SkillViewSet
+from spells.views import SpellViewSet
+from parties.views import PartyViewSet
 
 router = routers.DefaultRouter()
 # Admin Routes
@@ -33,8 +35,10 @@ router.register(r'api/permissions', PermissionViewSet, basename='permission-read
 
 # Character Routes
 router.register(r'api/characters', CharacterViewSet)
+router.register(r'api/ancestries/subancestries', SubAncestryViewSet)
 router.register(r'api/ancestries', AncestryViewSet)
 router.register(r'api/backgrounds', BackgroundViewSet)
+router.register(r'api/classes/archetypes', ArchetypeViewSet)
 router.register(r'api/classes', CharacterClassViewSet)
 router.register(r'api/features', FeatureViewSet)
 
@@ -42,6 +46,7 @@ router.register(r'api/features', FeatureViewSet)
 router.register(r'api/equipment/adventuring_gear', AdventuringGearViewSet)
 router.register(r'api/equipment/armor', ArmorViewSet)
 router.register(r'api/equipment/tools', ToolViewSet)
+router.register(r'api/equipment/weapons/properties', WeaponPropertyViewSet)
 router.register(r'api/equipment/weapons', WeaponViewSet)
 router.register(r'api/equipment/wondrous_items', WondrousItemViewSet)
 
@@ -49,6 +54,10 @@ router.register(r'api/equipment/wondrous_items', WondrousItemViewSet)
 router.register(r'api/skills', SkillViewSet)
 
 # Spells routes
+router.register(r'api/spells', SpellViewSet)
+
+# Parties routes
+router.register(r'api/parties', PartyViewSet)
 
 urlpatterns = [
     path('api/django/', admin.site.urls),

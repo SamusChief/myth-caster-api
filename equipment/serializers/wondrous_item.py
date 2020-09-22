@@ -1,11 +1,11 @@
 """ WondrousItem serializers. """
-from rest_framework import serializers
-
+from common.serializers import OwnedModelSerializer
 from equipment.models import WondrousItem
 
 
-class WondrousItemSerializer(serializers.ModelSerializer):
+class WondrousItemSerializer(OwnedModelSerializer):
     """ Serializer for WondrousItem model """
     class Meta:
         model = WondrousItem
         fields = '__all__'
+        depth = 1

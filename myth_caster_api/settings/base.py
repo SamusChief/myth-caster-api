@@ -41,8 +41,10 @@ INSTALLED_APPS = [
     'django_filters',
     'rest_framework',
     'common',
+    'parties',
     'equipment',
     'skills',
+    'spells',
     'character'
 ]
 

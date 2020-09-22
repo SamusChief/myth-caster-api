@@ -1,11 +1,11 @@
 """ Armor serializers. """
-from rest_framework import serializers
-
+from common.serializers import OwnedModelSerializer
 from equipment.models import Armor
 
 
-class ArmorSerializer(serializers.ModelSerializer):
+class ArmorSerializer(OwnedModelSerializer):
     """ Serializer for Armor model """
     class Meta:
         model = Armor
         fields = '__all__'
+        depth = 1

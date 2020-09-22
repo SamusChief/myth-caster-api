@@ -1,7 +1,9 @@
 from django.db import models
 
+from common.models import OwnedModel
 
-class WeaponProperty(models.Model):
+
+class WeaponProperty(OwnedModel):
     """
     Model to represent weapon properties.
 

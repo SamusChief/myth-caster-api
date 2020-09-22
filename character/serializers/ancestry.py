@@ -1,18 +1,23 @@
 """ Ancestry serializers. """
 from rest_framework import serializers
 
-from character.models import Ancestry, SubAncestry
+from common.serializers import OwnedModelSerializer
+from character.models import Ancestry, SubAncestry, Feature
 
 
-class AncestrySerializer(serializers.ModelSerializer):
+class AncestrySerializer(OwnedModelSerializer):
     """ Serializer for Ancestry model """
+    features = serializers.PrimaryKeyRelatedField(queryset=Feature.objects.all(), many=True)
     class Meta:
         model = Ancestry
         fields = '__all__'
+        depth = 1
 
 
-class SubAncestrySerializer(serializers.ModelSerializer):
+class SubAncestrySerializer(AncestrySerializer):
     """ Serializer for SubAncestry model """
+    parent = serializers.PrimaryKeyRelatedField(queryset=Ancestry.objects.all())
     class Meta:
         model = SubAncestry
         fields = '__all__'
+        depth = 1
