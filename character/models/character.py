@@ -11,6 +11,7 @@ from django.db import models
 from common.models import OwnedModel
 from equipment.models import AdventuringGear, Armor, Tool, Weapon, WondrousItem
 from skills.models import Skill
+from conditions.models import Condition
 
 from .ancestry import Ancestry, SubAncestry
 from .background import Background
@@ -112,13 +113,15 @@ class Character(OwnedModel):
         related_name='characters_with_subancestry', blank=True, null=True)
     background = models.ForeignKey(to=Background, on_delete=models.PROTECT)
     xp = models.PositiveIntegerField(default=0)
-    class_levels = models.ManyToManyField(to=ClassAndLevel, blank=True,
-                                          related_name='characters_with_class_and_level')
+    class_levels = models.ManyToManyField(to=ClassAndLevel, blank=True, \
+        related_name='characters_with_class_and_level')
 
     # Health, conditions, and death tracking
     hit_point_total = models.PositiveIntegerField()
     hit_point_current = models.PositiveIntegerField()
     temporary_hit_point_total = models.PositiveIntegerField()
+    conditions = models.ManyToManyField(to=Condition, blank=True, \
+        related_name='characters_with_condition')
 
     # Ability fields
     strength = models.PositiveIntegerField(default=10)
