@@ -26,6 +26,7 @@ from equipment.views import AdventuringGearViewSet, ArmorViewSet, ToolViewSet, \
 from skills.views import SkillViewSet
 from spells.views import SpellViewSet
 from parties.views import PartyViewSet
+from conditions.views import ConditionViewSet
 
 router = routers.DefaultRouter()
 # Admin Routes
@@ -58,6 +59,9 @@ router.register(r'api/spells', SpellViewSet)
 
 # Parties routes
 router.register(r'api/parties', PartyViewSet)
+
+# Conditions routes
+router.register(r'api/conditions', ConditionViewSet)
 
 urlpatterns = [
     path('api/django/', admin.site.urls),
