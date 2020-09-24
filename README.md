@@ -9,21 +9,29 @@ It is built using Python, specifically Django with Django Rest Framework, and us
 ### Prerequisistes for Local development
 
 - Docker and Docker-Compose installed
-- a `mythcaster.env` file, which should define:
-  - DJANGO_SECRET_KEY: can be pulled from a default django quickstart project
-  - POSTGRES_DB: Name of the database to use.
-  - POSTGRES_USER: User account to access postgres with
-  - POSTGRES_PASSWORD: Password of user to access postgres with
-  - POSTGRES_HOST: Host IP Address/Domain Name where the postgres database is hosted
+- a `mythcaster.env` file, an example is provided below
 
-### Set up a virtualenv for the project
+```env
+# Docker settings
+# DOCKER_PYTHON_TAG=3  # optional; default is 3
+# DOCKER_DJANGO_CONTAINER_NAME=myth-caster-django  # optional; default is myth-caster-django
+# DOCKER_POSTGRES_TAG=12  # optional; default is 12
+# DOCKER_POSTGRES_CONTAINER_NAME=myth-caster-postgres  # optional; default is myth-caster-postgres
+# DOCKER_POSTGRES_DATA_DIR=/data/postgres/myth-caster-api  # optional; default is /data/postgres/myth-caster-api
 
-Make sure you set up a virtualenv for the project, to help manage the `requirements.txt` file.
+# Django Settings
+DJANGO_SECRET_KEY='h=cwo7sd1%s!h!3jy3g72j3#l-s=s-21gfng!=!vwv56rqyng!'  # required; generate using https://miniwebtool.com/django-secret-key-generator/
 
-Once you have a virtual environment set up for python, you can install the dependencies:
+# Database Settings
+POSTGRES_DB=mythcaster  # required; identifies the database used by the app
+POSTGRES_USER=mythcaster  # required; identifies the user, who should have access to the above DB
+POSTGRES_PASSWORD=supersecretpassword  # required; you should change this
+POSTGRES_HOST=postgres  # required; used to connect to postgres instance
+# POSTGRES_PORT=5432  # optional; default is 5432
 
-```bash
-pip install -r requirements.txt
+# Logging settings
+# LOG_LEVEL=WARN  # optional; default is WARN
+
 ```
 
 ### Running a local server
@@ -31,26 +39,42 @@ pip install -r requirements.txt
 1. Make sure you run the database: `docker-compose up -d postgres`
 1. Run the python container: `docker-compose up django`
 1. Start coding! Changes will automatically refresh the code, and errors will log to your terminal.
+1. If you need to run a `manage.py` script, you can use the `-d` flag to run the django service as well. Then, you can follow the instructions below in `Running & creating database migrations`.
+
+#### Rebuilding the Django service
+
+The Django container runs in its own built docker container, defined by the `Dockerfile` in the project root. Whenever you change this file or the project's `requirements.txt` file, you will need to rebuild this container. To do so, on next startup, run this instead:
+
+```bash
+docker-compose up --build django
+```
 
 ### Running & creating database migrations
 
-If any of your changes require migrations to be created, any migrations not requiring user input can be created automatically the next time the docker container spins up. Create them with:
+When you first run the application, you will need to run migrations as well. If you make changes to a model, or add one, you will need migrations for that as well.
+
+First, run the django service in a detached state:
 
 ```bash
-docker-compose down
-docker-compose up
+docker-compose up -d django
 ```
 
-If any migrations require user input, you will have to shell into the python container:
+#### Creating Migrations
+
+To create migrations, run the following script:
 
 ```bash
-docker-compose run django bash
+docker-compose exec django python manage.py makemigrations
 ```
 
-Once you are in, you can run the following commands to create and run migrations, and punch input into any prompts needed:
+#### Running migrations
+
+To run migrations, run the following script:
 
 ```bash
-cd app
-python manage.py makemigrations
-python manage.py migrate
+docker-compose exec django python manage.py migrate
 ```
+
+#### Other manage.py scripts
+
+You can run other manage.py scripts, such as `test`, `createsuperuser`, and any custom scripts by following the same format as above. Alternatively, you can shell into the containers, and run the scripts directly.

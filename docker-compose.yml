@@ -1,21 +1,28 @@
 version: '3'
 services:
     postgres:
-        image: postgres
+        container_name: ${DOCKER_POSTGRES_CONTAINER_NAME:-myth-caster-postgres}
+        image: postgres:${DOCKER_POSTGRES_TAG:-12}
         env_file:
             - ./mythcaster.env
         volumes:
-            - ~/postgres/myth-caster-api:/var/lib/postgresql/data
+            - ${DOCKER_POSTGRES_DATA_DIR:-/data/postgres/myth-caster-api}:/var/lib/postgresql/data
+        networks:
+            - container-bridge
     django:
-        image: python:3
+        container_name: ${DOCKER_DJANGO_CONTAINER_NAME:-myth-caster-django}
+        build: .
         env_file:
             - ./mythcaster.env
-        command: bash -c "cd /app && pip install --upgrade pip && pip install -r requirements.txt && python manage.py makemigrations && python manage.py migrate && python manage.py runserver 0.0.0.0:8000"
+        command: python manage.py runserver 0.0.0.0:8000
         volumes:
-            - "./:/app"
+            - .:/code
         ports:
-            - "8000:8000"
+            - "${DOCKER_DJANGO_PORT:-8000}:${DOCKER_DJANGO_PORT:-8000}"
         depends_on:
             - postgres
-        links:
-            - postgres
+        networks:
+            - container-bridge
+networks:
+    container-bridge:
+        driver: bridge
