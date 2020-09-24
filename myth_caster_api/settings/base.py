@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'equipment',
     'skills',
     'spells',
+    'conditions',
     'character'
 ]
 
