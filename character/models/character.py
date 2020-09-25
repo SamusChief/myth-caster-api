@@ -11,7 +11,7 @@ from django.db import models
 from common.models import OwnedModel
 from equipment.models import AdventuringGear, Armor, Tool, Weapon, WondrousItem
 from skills.models import Skill
-from conditions.models import Condition
+from condition.models import Condition
 
 from .ancestry import Ancestry, SubAncestry
 from .background import Background
@@ -281,9 +281,15 @@ class Character(OwnedModel):
         weapon_proficiencies = sorted(weapon_proficiencies)
 
         # Other proficiencies
-        tool_proficiencies = sorted(self.proficient_tools.split(','))
-        language_proficiencies = sorted(self.proficient_languages.split(','))
-        other_proficiencies = sorted(self.proficient_other.split(','))
+        tool_proficiencies = []
+        language_proficiencies = []
+        other_proficiencies = []
+        if self.proficient_tools:
+            tool_proficiencies = sorted(self.proficient_tools.split(','))
+        if self.proficient_languages:
+            language_proficiencies = sorted(self.proficient_languages.split(','))
+        if self.proficient_other:
+            other_proficiencies = sorted(self.proficient_other.split(','))
 
         # Skill proficiencies
         skill_proficiencies = []

@@ -13,4 +13,8 @@ class CharacterOwnedOrAdminFilter(filters.BaseFilterBackend):
         if user.is_superuser:
             return queryset
 
-        return queryset.filter(Q(owner=user) | Q(authorized_editors__contains=user))
+        # Grab private users
+        return queryset.filter(
+            Q(is_private=False) | \
+                (Q(owner=user.id) | Q(authorized_editors__in=[user.id]))
+        )

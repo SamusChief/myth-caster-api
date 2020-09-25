@@ -26,7 +26,7 @@ from equipment.views import AdventuringGearViewSet, ArmorViewSet, ToolViewSet, \
 from skills.views import SkillViewSet
 from spells.views import SpellViewSet
 from parties.views import PartyViewSet
-from conditions.views import ConditionViewSet
+from condition.views import ConditionViewSet
 
 router = routers.DefaultRouter()
 # Admin Routes

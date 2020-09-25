@@ -17,10 +17,10 @@ class CharacterViewSet(viewsets.ModelViewSet):
     queryset = Character.objects.all()
     serializer_class = CharacterSerializer
     filter_backends = [
+        CharacterOwnedOrAdminFilter,
         DjangoFilterBackend,
         filters.SearchFilter,
-        filters.OrderingFilter,
-        CharacterOwnedOrAdminFilter
+        filters.OrderingFilter
     ]
     search_fields = '__all__'
     filterset_fields = '__all__'

@@ -6,14 +6,14 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('conditions', '0001_initial'),
+        ('condition', '0001_initial'),
         ('character', '0007_auto_20200922_0044'),
     ]
 
     operations = [
         migrations.AddField(
             model_name='character',
-            name='conditions',
-            field=models.ManyToManyField(blank=True, related_name='characters_with_condition', to='conditions.Condition'),
+            name='condition',
+            field=models.ManyToManyField(blank=True, related_name='characters_with_condition', to='condition.Condition'),
         ),
     ]

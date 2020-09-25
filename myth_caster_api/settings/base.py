@@ -46,8 +46,9 @@ INSTALLED_APPS = [
     'equipment',
     'skills',
     'spells',
-    'conditions',
-    'character'
+    'condition',
+    'character',
+    'tests'
 ]
 
 MIDDLEWARE = [

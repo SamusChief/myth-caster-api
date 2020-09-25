@@ -6,7 +6,7 @@ from character.models import Character, ClassAndLevel, \
     InventoryAdventuringGear, InventoryArmor, InventoryTool, \
         InventoryWeapon, InventoryWondrousItem, SkillProficiency, \
             Ancestry, SubAncestry, Background, CharacterClass
-from conditions.models import Condition
+from condition.models import Condition
 from equipment.models import AdventuringGear, Armor, Tool, Weapon, \
     WondrousItem
 from skills.models import Skill
