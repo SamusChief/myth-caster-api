@@ -11,6 +11,6 @@ REST_FRAMEWORK = {
         'rest_framework.filters.OrderingFilter'
     ],
     'DEFAULT_PERMISSION_CLASSES': [
-        'common.permissions.OwnedPropertyPermission'
+        'common.permissions.IsOwnerOrEditor'
     ]
 }

@@ -1,23 +1,19 @@
 """ Permission serializer implementation. """
-from django.contrib.auth.models import Permission
+from django.contrib.auth.models import Permission, ContentType
 
 from rest_framework import serializers
 
 
+class ContentTypeSerializer(serializers.ModelSerializer):
+    """ Serializer for ContentType model instances """
+    class Meta:
+        model = ContentType
+        fields = ['id', 'name', 'model', 'app_label']
+
+
 class PermissionSerializer(serializers.ModelSerializer):
     """ Permission model serializer """
+    content_type = ContentTypeSerializer(read_only=True)
     class Meta:
         model = Permission
         fields = '__all__'
-
-    def to_representation(self, instance):
-        """ Override in order to serialize content_type field as well """
-        result = super(PermissionSerializer, self).to_representation(instance)
-        if result.get('content_type', None):
-            result['content_type'] = {
-                'id': getattr(instance.content_type, 'id'),
-                'name': getattr(instance.content_type, 'name'),
-                'model': getattr(instance.content_type, 'model'),
-                'app_label': getattr(instance.content_type, 'app_label')
-            }
-        return result

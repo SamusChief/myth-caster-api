@@ -40,9 +40,15 @@ class Weapon(MagicItemModel):
     @property
     def must_use_dex_mod(self):
         """ Property to determine if the weapon must use dexterity modifier """
-        property_names = [p.name.lower() for p in self.properties.all()]
-        for name in property_names:
-            if 'ranged' in name:
+        ranged = self._check_for_name_in_properties('ranged', self.properties.all())
+        thrown = self._check_for_name_in_properties('thrown', self.properties.all())
+        return ranged and not thrown
+
+    @staticmethod
+    def _check_for_name_in_properties(name, properties):
+        property_names = [p.name.lower() for p in properties]
+        for p_name in property_names:
+            if name in p_name:
                 return True
         return False
 

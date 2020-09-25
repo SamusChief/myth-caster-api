@@ -1,5 +1,6 @@
 """ Character ViewSets """
-from rest_framework import viewsets
+from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework import viewsets, filters
 
 from character.models import Character, ClassAndLevel, \
     InventoryAdventuringGear, InventoryArmor, InventoryTool, \
@@ -8,12 +9,19 @@ from character.serializers import CharacterSerializer, ClassAndLevelSerializer, 
     InventoryAdventuringGearSerializer, InventoryArmorSerializer, \
         InventoryToolSerializer, InventoryWeaponSerializer, InventoryWondrousItemSerializer, \
             SkillProficiencySerializer
+from character.filters import CharacterOwnedOrAdminFilter
 
 
 class CharacterViewSet(viewsets.ModelViewSet):
     """ ViewSet for Character. """
     queryset = Character.objects.all()
     serializer_class = CharacterSerializer
+    filter_backends = [
+        DjangoFilterBackend,
+        filters.SearchFilter,
+        filters.OrderingFilter,
+        CharacterOwnedOrAdminFilter
+    ]
     search_fields = '__all__'
     filterset_fields = '__all__'
     ordering_fields = '__all__'

@@ -78,8 +78,10 @@ class Character(OwnedModel):
         background: the character's background
         xp: total experience points
         class_levels: mapping of classes and levels the character has
+        is_private: whether this character should be publicly accessible. Default to False
         hit_point_total: character total hit points
         hit_point_current: character current hit points
+        conditions: character's current conditions affecting them
         temporary_hit_point_total: temporary HP, deducted first
         strength: raw physical strength of the character
         dexterity: agility and poise of the character
@@ -104,7 +106,6 @@ class Character(OwnedModel):
         inventory_weapons: mapping to quantity and weapons
         inventory_wondroud_items: mapping to quantity and wondrous items
     """
-
     # Basic information fields
     name = models.CharField(max_length=255, db_index=True)
     ancestry = models.ForeignKey(to=Ancestry, on_delete=models.PROTECT, \
@@ -115,6 +116,7 @@ class Character(OwnedModel):
     xp = models.PositiveIntegerField(default=0)
     class_levels = models.ManyToManyField(to=ClassAndLevel, blank=True, \
         related_name='characters_with_class_and_level')
+    is_private = models.BooleanField(default=False)
 
     # Health, conditions, and death tracking
     hit_point_total = models.PositiveIntegerField()
