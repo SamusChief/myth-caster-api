@@ -19,7 +19,6 @@ class PartiesUsersMixin:
     @property
     def parties_all_users(self):
         """ Get the list of all users who can see this handout """
-        parties_player_ids = self.parties.all().values_list('players__id', flat=True)
-        parties_gm_ids = self.parties.all().values_list('game_masters__id', flat=True)
-        parties_all_users = (parties_player_ids | parties_gm_ids).distinct()
-        return get_user_model().objects.filter(id__in=parties_all_users)
+        parties_players = self.parties_all_players
+        parties_gms = self.parties_all_gms
+        return parties_players | parties_gms
