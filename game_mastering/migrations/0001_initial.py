@@ -17,7 +17,7 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.CreateModel(
-            name='File',
+            name='GameMasterFile',
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('upload', models.FileField(upload_to='game_master_materials/%Y/%m/%d/')),
@@ -36,7 +36,7 @@ class Migration(migrations.Migration):
                 ('subtitle', models.TextField(blank=True, null=True)),
                 ('content', models.TextField(blank=True, null=True)),
                 ('authorized_editors', models.ManyToManyField(blank=True, related_name='_notes_authorized_editors_+', to=settings.AUTH_USER_MODEL)),
-                ('files', models.ManyToManyField(blank=True, related_name='file_notes', to='game_mastering.File')),
+                ('files', models.ManyToManyField(blank=True, related_name='file_notes', to='game_mastering.GameMasterFile')),
                 ('owner', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, to=settings.AUTH_USER_MODEL)),
                 ('parties', models.ManyToManyField(blank=True, related_name='party_notes', to='parties.Party')),
             ],
@@ -54,7 +54,7 @@ class Migration(migrations.Migration):
                 ('content', models.TextField(blank=True, null=True)),
                 ('secret_content', models.TextField(blank=True, null=True)),
                 ('authorized_editors', models.ManyToManyField(blank=True, related_name='_handout_authorized_editors_+', to=settings.AUTH_USER_MODEL)),
-                ('files', models.ManyToManyField(blank=True, related_name='file_handouts', to='game_mastering.File')),
+                ('files', models.ManyToManyField(blank=True, related_name='file_handouts', to='game_mastering.GameMasterFile')),
                 ('owner', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, to=settings.AUTH_USER_MODEL)),
                 ('parties', models.ManyToManyField(blank=True, related_name='party_handouts', to='parties.Party')),
             ],

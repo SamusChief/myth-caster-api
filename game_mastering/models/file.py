@@ -4,7 +4,7 @@ from django.db import models
 from common.models import OwnedModel
 
 
-class File(OwnedModel):
+class GameMasterFile(OwnedModel):
     """
     Model to represent specific files.
 

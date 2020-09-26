@@ -4,7 +4,7 @@ from django.db import models
 from common.models import OwnedModel
 from parties.models import Party
 
-from .file import File
+from .file import GameMasterFile
 from .mixins import PartiesUsersMixin
 
 
@@ -23,4 +23,4 @@ class Notes(OwnedModel, PartiesUsersMixin):
     subtitle = models.TextField(blank=True, null=True)
     parties = models.ManyToManyField(to=Party, related_name='party_notes', blank=True)
     content = models.TextField(blank=True, null=True)
-    files = models.ManyToManyField(to=File, blank=True, related_name='file_notes')
+    files = models.ManyToManyField(to=GameMasterFile, blank=True, related_name='file_notes')

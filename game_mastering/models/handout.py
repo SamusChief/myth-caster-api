@@ -4,7 +4,7 @@ from django.db import models
 from common.models import OwnedModel
 from parties.models import Party
 
-from .file import File
+from .file import GameMasterFile
 from .mixins import PartiesUsersMixin
 
 
@@ -25,4 +25,4 @@ class Handout(OwnedModel, PartiesUsersMixin):
     parties = models.ManyToManyField(to=Party, related_name='party_handouts', blank=True)
     content = models.TextField(blank=True, null=True)
     secret_content = models.TextField(blank=True, null=True)
-    files = models.ManyToManyField(to=File, blank=True, related_name='file_handouts')
+    files = models.ManyToManyField(to=GameMasterFile, blank=True, related_name='file_handouts')
