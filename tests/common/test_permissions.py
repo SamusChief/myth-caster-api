@@ -114,6 +114,16 @@ class IsOwnerOrEditorTestCase(APITestCase):
         self.assertEqual(200, detail_response.status_code)
         self.assertNotIn('actions', options_response_detail.json())
 
+    def test_authenticated_user_can_read_and_post(self):
+        """ Test that an authenticated user can create new data, and read data """
+        self.client.login(username='other_user', password='temp')
+
+        response = self.client.get(f'{SKILLS_PATH}', format='json')
+        self.assertEqual(200, response.status_code)
+
+        options = self.client.options(f'{SKILLS_PATH}', format='json')
+        self.assertIn('POST', options.json()['actions'])
+
     def test_superuser_can_edit(self):
         """ Superusers should be able to edit data """
         self.client.login(username='superuser', password='temp')
