@@ -3,7 +3,7 @@ from rest_framework import permissions
 
 
 SAFE_METHODS = ['GET', 'OPTIONS', 'HEAD']
-
+SAFE_METHODS_WITH_POST = SAFE_METHODS + ['POST']
 
 class IsAdminOrReadOnly(permissions.IsAdminUser):
     """ Allow access to admin users, or read-only access if non-admin """
@@ -22,6 +22,20 @@ class IsOwnerOrEditor(permissions.DjangoModelPermissionsOrAnonReadOnly):
         - they are admins
         - they are either an owner or authorized editor
     """
+    def has_permission(self, request, view):
+        """ Authenticated users can create and read all data """
+        method = request.method
+        user = request.user
+
+        # inactive and unauthenticated users have read-only access
+        if not user.is_active or not user.is_authenticated:
+            return method in SAFE_METHODS
+
+        # active admin users bypass all permissions checks
+        if user.is_superuser:
+            return True
+
+        return method in SAFE_METHODS_WITH_POST
 
     def has_object_permission(self, request, view, obj):
         """ Override object permissions to check editors and owners """
@@ -30,18 +44,19 @@ class IsOwnerOrEditor(permissions.DjangoModelPermissionsOrAnonReadOnly):
         method = request.method
         user = request.user
 
-        # inactive users can't do anything
-        if not user.is_active:
-            return False
+        # inactive and unauthenticated users have read-only access
+        if not user.is_active or not user.is_authenticated:
+            return method in SAFE_METHODS
 
-        # admin users bypass all permissions checks
+        # active admin users bypass all permissions checks
         if user.is_superuser:
             return True
 
         # Check for an is_private flag. If its found and true, jump directly to checking
-        # for owner/editor status. Ignore parent result in this case.
+        # for owner/editor status. Ignore parent result in this case, returning False for
+        # non-owners and non-editors
         if getattr(obj, 'is_private', False):
-            return self._user_is_owner_or_authorized(user, obj, False)
+            return self._user_is_owner_or_authorized(user, obj)
 
         # Ignore GET, HEAD, OPTIONS for object checks
         if method in SAFE_METHODS:

@@ -10,7 +10,7 @@ class OwnedModelSerializer(serializers.ModelSerializer):
     owner = serializers.PrimaryKeyRelatedField(
         queryset=get_user_model().objects.all(), required=False)
     authorized_editors = serializers.PrimaryKeyRelatedField(many=True,
-        queryset=get_user_model().objects.all())
+        queryset=get_user_model().objects.all(), required=False)
 
     class Meta:
         model = OwnedModel

@@ -10,7 +10,6 @@ WEAPON_CATEGORY_CHOICES = [
     ('M', 'Martial Weapon'),
     ('O', 'Other')
 ]
-DEX_PROPERTY_KEYWORDS = ['finesse', 'thrown', 'ranged']
 
 
 class Weapon(MagicItemModel):
@@ -28,21 +27,31 @@ class Weapon(MagicItemModel):
     properties = models.ManyToManyField(to=WeaponProperty, related_name='weapons')
 
     @property
-    def can_use_dex_mod(self):
+    def can_use_dex(self):
         """ Property to determine if the weapon can use dexterity modifier """
-        property_names = [p.name.lower() for p in self.properties.all()]
-        for name in property_names:
-            for keyword in DEX_PROPERTY_KEYWORDS:
-                if keyword in name:
-                    return True
+        instance_properties = self.properties.all()
+        finesse = self._check_for_name_in_properties('finesse', instance_properties)
+        ranged = self._check_for_name_in_properties('ranged', instance_properties)
+        thrown = self._check_for_name_in_properties('thrown', instance_properties)
+        if finesse:
+            return True
+        if finesse and thrown:
+            return True
+        if not finesse and not thrown and ranged:
+            return True
         return False
 
     @property
-    def must_use_dex_mod(self):
-        """ Property to determine if the weapon must use dexterity modifier """
-        ranged = self._check_for_name_in_properties('ranged', self.properties.all())
-        thrown = self._check_for_name_in_properties('thrown', self.properties.all())
-        return ranged and not thrown
+    def must_use_dex(self):
+        """ Property to determine if the weapon must use dexterity modifier.
+        Exclusively ranged weapons use dexterity """
+        instance_properties = self.properties.all()
+        finesse = self._check_for_name_in_properties('finesse', instance_properties)
+        ranged = self._check_for_name_in_properties('ranged', instance_properties)
+        thrown = self._check_for_name_in_properties('thrown', instance_properties)
+        if not finesse and not thrown and ranged:
+            return True
+        return False
 
     @staticmethod
     def _check_for_name_in_properties(name, properties):

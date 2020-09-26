@@ -3,7 +3,8 @@ from ddf import G
 
 from rest_framework.test import APITestCase
 
-from character.models import Character, CharacterClass, ClassAndLevel, SkillProficiency
+from character.models import Character, CharacterClass, ClassAndLevel, SkillProficiency, \
+    Ancestry, SubAncestry
 from skills.models import Skill
 
 
@@ -109,3 +110,16 @@ class CharacterModelTestCase(APITestCase):
 
         self.assertNotIn('Light Armor', result['armor'])
         self.assertNotIn('Elvish', result['languages'])
+
+
+class AncestryModelTestCase(APITestCase):
+    """ Test class for the ancestry model properties """
+    def test_has_child(self):
+        """ Test that the has_child property correctly determines when an
+        ancestry has a child ancestry """
+        ancestry_no_children = G(Ancestry)
+        ancestry_has_children = G(Ancestry)
+        G(SubAncestry, parent=ancestry_has_children)
+
+        self.assertTrue(ancestry_has_children.has_child)
+        self.assertFalse(ancestry_no_children.has_child)

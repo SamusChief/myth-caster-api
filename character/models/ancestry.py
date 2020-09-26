@@ -22,8 +22,9 @@ class Ancestry(OwnedModel):
     @property
     def has_child(self):
         """ Property for determining if this ancestry has any sub ancestries """
-        if getattr(self, 'children', None):
-            return True
+        children = getattr(self, 'children', None)
+        if children:
+            return children.count() > 0
         return False
 
     def __str__(self):
