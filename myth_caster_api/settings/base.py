@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'common',
     'parties',
+    'game_mastering',
     'equipment',
     'skills',
     'spells',

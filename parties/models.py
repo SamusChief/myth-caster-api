@@ -37,3 +37,8 @@ class Party(OwnedModel):
     game_masters = models.ManyToManyField(to=get_user_model(), related_name='parties_gming')
     players = models.ManyToManyField(to=get_user_model(),
         blank=True, related_name='parties_playing')
+
+    @property
+    def all_users(self):
+        """ Property to grab all distinct users """
+        return (self.game_masters.all() | self.players.all()).distinct()

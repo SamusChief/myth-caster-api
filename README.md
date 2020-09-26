@@ -78,3 +78,5 @@ docker-compose exec django python manage.py migrate
 #### Other manage.py scripts
 
 You can run other manage.py scripts, such as `test`, `createsuperuser`, and any custom scripts by following the same format as above. Alternatively, you can shell into the containers, and run the scripts directly.
+
+When using `startapp` to create new sections, it is recommended to do so as a non-root user outside of your docker container. Do do this, you will need a python environment.
