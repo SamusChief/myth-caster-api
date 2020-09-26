@@ -14,3 +14,10 @@ class OwnedModel(models.Model):
 
     class Meta:
         abstract = True
+
+class PrivateModel(OwnedModel):
+    """ Abstract model for models that can be marked private. """
+    is_private = models.BooleanField(default=False)
+
+    class Meta:
+        abstract = True

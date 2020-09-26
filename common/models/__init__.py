@@ -1,2 +1,2 @@
 """ Common models """
-from .mixins import OwnedModel
+from .mixins import OwnedModel, PrivateModel

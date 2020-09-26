@@ -30,4 +30,4 @@ class Feature(OwnedModel):
     prerequisite_charisma = models.IntegerField(default=0, db_index=True)
 
     def __str__(self):
-        return str(self.name)
+        return f'Feature: {self.name}'

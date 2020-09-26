@@ -1,7 +1,7 @@
 """ Character serializers. """
 from rest_framework import serializers
 
-from common.serializers import OwnedModelSerializer
+from common.serializers import OwnedModelSerializer, PrivateModelSerializer
 from character.models import Character, ClassAndLevel, \
     InventoryAdventuringGear, InventoryArmor, InventoryTool, \
         InventoryWeapon, InventoryWondrousItem, SkillProficiency, \
@@ -76,7 +76,7 @@ class SkillProficiencySerializer(OwnedModelSerializer):
 
 
 
-class CharacterSerializer(OwnedModelSerializer):
+class CharacterSerializer(PrivateModelSerializer):
     """ Serializer for Character model """
     # Fields must be chosen, not created on a character
     background = serializers.PrimaryKeyRelatedField(queryset=Background.objects.all())

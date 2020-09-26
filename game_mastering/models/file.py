@@ -1,10 +1,10 @@
 """ Model for tracking file uploads to the server """
 from django.db import models
 
-from common.models import OwnedModel
+from common.models import PrivateModel
 
 
-class GameMasterFile(OwnedModel):
+class GameMasterFile(PrivateModel):
     """
     Model to represent specific files.
 
@@ -13,3 +13,6 @@ class GameMasterFile(OwnedModel):
     """
     name = models.CharField(unique=True, max_length=255, db_index=True)
     upload = models.FileField(upload_to='game_master_materials/%Y/%m/%d/')
+
+    def __str__(self):
+        return f'File: {self.id}|{self.name}'

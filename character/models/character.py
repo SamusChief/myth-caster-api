@@ -8,7 +8,7 @@ import math
 
 from django.db import models
 
-from common.models import OwnedModel
+from common.models import OwnedModel, PrivateModel
 from equipment.models import AdventuringGear, Armor, Tool, Weapon, WondrousItem
 from skills.models import Skill
 from condition.models import Condition
@@ -68,7 +68,7 @@ class SkillProficiency(OwnedModel):
                                          default=PROFICIENT, max_length=1)
 
 
-class Character(OwnedModel):
+class Character(PrivateModel):
     """
     Model for representing characters.
 
@@ -116,7 +116,6 @@ class Character(OwnedModel):
     xp = models.PositiveIntegerField(default=0)
     class_levels = models.ManyToManyField(to=ClassAndLevel, blank=True, \
         related_name='characters_with_class_and_level')
-    is_private = models.BooleanField(default=False)
 
     # Health, conditions, and death tracking
     hit_point_total = models.PositiveIntegerField()
@@ -306,4 +305,4 @@ class Character(OwnedModel):
         for c_l in self.class_levels.all():
             classes.append(f'{c_l.character_class.name} {c_l.level}')
         classes_str = '/'.join(classes)
-        return f'{self.name}: {ancestry} {classes_str}'
+        return f'Character: {self.name}|{ancestry} {classes_str}'

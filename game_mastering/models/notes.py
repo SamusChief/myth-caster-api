@@ -24,3 +24,6 @@ class Notes(OwnedModel, PartiesUsersMixin):
     parties = models.ManyToManyField(to=Party, related_name='party_notes', blank=True)
     content = models.TextField(blank=True, null=True)
     files = models.ManyToManyField(to=GameMasterFile, blank=True, related_name='file_notes')
+
+    def __str__(self):
+        return f'Notes: {self.id}|{self.title}'
