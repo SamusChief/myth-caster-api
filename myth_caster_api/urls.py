@@ -27,6 +27,7 @@ from skills.views import SkillViewSet
 from spells.views import SpellViewSet
 from parties.views import PartyViewSet
 from condition.views import ConditionViewSet
+from game_mastering.views import GameMasterFileViewSet, HandoutViewSet, NotesViewSet
 
 router = routers.DefaultRouter()
 # Admin Routes
@@ -62,6 +63,11 @@ router.register(r'api/parties', PartyViewSet)
 
 # Conditions routes
 router.register(r'api/conditions', ConditionViewSet)
+
+# Game Mastering routes
+router.register(r'api/game_mastering/files', GameMasterFileViewSet)
+router.register(r'api/game_mastering/handouts', HandoutViewSet)
+router.register(r'api/game_mastering/notes', NotesViewSet)
 
 urlpatterns = [
     path('api/django/', admin.site.urls),

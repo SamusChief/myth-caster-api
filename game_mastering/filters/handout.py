@@ -12,7 +12,7 @@ class HandoutsFilter(NotesFilter):
         # owners and editors can see
         query = Q(owner=user.id) | Q(authorized_editors__in=[user.id])
         # Game masters can see
-        query = query | Q(parties__game_masters__in=user.id)
+        query = query | Q(parties__game_masters__in=[user.id])
         # Players can see
-        query = query | Q(parties__players__in=user.id)
+        query = query | Q(parties__players__in=[user.id])
         return query

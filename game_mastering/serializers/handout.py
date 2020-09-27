@@ -17,7 +17,7 @@ class HandoutSerializer(OwnedModelSerializer):
         # Superusers bypass the check and can see all information
         if getattr(user, 'is_superuser', False):
             return False
-        
+
         # Anonymous users must have content hidden
         if not getattr(user, 'is_authenticated', False):
             return True
@@ -34,9 +34,8 @@ class HandoutSerializer(OwnedModelSerializer):
     def to_representation(self, instance):
         """ Override to account for secret data """
         result = super(HandoutSerializer, self).to_representation(instance)
-        request = self.context.get('request', {})
-        user = request.get('user')
-        files = instance.files
+        user = self.context.get('request.user', None)
+        files = instance.files.all()
 
         # If we need to hide secret content, replace it with a string message.
         # Also, hide any private files
